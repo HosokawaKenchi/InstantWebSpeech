@@ -8,64 +8,23 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <button id="btn">録音開始</button>
-    
-    <div id="result">ここに文字が表示されます...</div>
+    <div class="app-container">
 
-    <button onclick="copyText()">テキストをコピー</button>
-    <script>
-    function copyText() {
-        const text = document.getElementById('result').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("コピーしました！");
-        });
-    }
-    </script>
+        <div class="top-controls">
+            <select id="langSelect" class="lang-dropdown"></select>
+            
+            <button id="btn" class="main-record-btn">録音開始</button>
+            <button id="copyBtn" class="copy-btn">📋 内容をコピー</button>
+        </div>
 
+        <div id="result"></div>
 
-    <script>
-        // Service Worker の登録
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+        <div class="bottom-controls">
+            <button id="resetBtn" class="danger-link-btn">🗑️ 文字起こし内容を消去</button>
+        </div>
+    </div>
 
-        const btn = document.getElementById('btn');
-        const resultDiv = document.getElementById('result');
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-        if (!SpeechRecognition) {
-            resultDiv.textContent = "お使いのブラウザは音声認識に対応していません。";
-        } else {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'ja-JP';
-            recognition.interimResults = true;
-            recognition.continuous = true;
-
-            let isRecording = false;
-
-            btn.onclick = () => {
-                if (!isRecording) {
-                    recognition.start();
-                    btn.textContent = "停止";
-                    btn.style.background = "#dc3545";
-                } else {
-                    recognition.stop();
-                    btn.textContent = "録音開始";
-                    btn.style.background = "#007bff";
-                }
-                isRecording = !isRecording;
-            };
-
-            recognition.onresult = (event) => {
-                let text = '';
-                for (let i = 0; i < event.results.length; i++) {
-                    text += event.results[i][0].transcript;
-                }
-                resultDiv.textContent = text;
-                // 一番下までスクロール
-                window.scrollTo(0, document.body.scrollHeight);
-            };
-        }
-    </script>
+    <script src="languages.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

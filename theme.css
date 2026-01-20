@@ -1,0 +1,54 @@
+/* theme.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    background: #007bff;
+    color: white;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#result {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 150px;
+    padding: 12px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+/* ダークモード対応（OSの設定に合わせる） */
+@media (prefers-color-scheme: dark) {
+    body { background-color: #121212; color: #e0e0e0; }
+    #result { background-color: #1e1e1e; border-color: #333; }
+    button { background: #0056b3; }
+}

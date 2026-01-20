@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Speech</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        #result { border: 1px solid #ccc; width: 90%; min-height: 200px; padding: 10px; margin-top: 10px; border-radius: 8px; }
+        button { padding: 10px 20px; font-size: 1.2em; cursor: pointer; border-radius: 5px; border: none; background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <button id="btn">録音開始</button>
+    <div id="result">ここに文字が表示されます...</div>
+
+    <script>
+        // Service Worker の登録
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        const btn = document.getElementById('btn');
+        const resultDiv = document.getElementById('result');
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            resultDiv.textContent = "お使いのブラウザは音声認識に対応していません。";
+        } else {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ja-JP';
+            recognition.interimResults = true;
+            recognition.continuous = true;
+
+            let isRecording = false;
+
+            btn.onclick = () => {
+                if (!isRecording) {
+                    recognition.start();
+                    btn.textContent = "停止";
+                    btn.style.background = "#dc3545";
+                } else {
+                    recognition.stop();
+                    btn.textContent = "録音開始";
+                    btn.style.background = "#007bff";
+                }
+                isRecording = !isRecording;
+            };
+
+            recognition.onresult = (event) => {
+                let text = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    text += event.results[i][0].transcript;
+                }
+                resultDiv.textContent = text;
+            };
+        }
+    </script>
+</body>
+</html>

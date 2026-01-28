@@ -27,7 +27,6 @@
 *   **iOS Safari**
 *   ブラウザが **Web Speech API** と **Service Worker** に対応している必要があります  
     （対応していない場合は、アプリ側が「Speech Recognition is not supported.」と表示します）
-*   Firefoxではブラウザアプリとして動作しますがPWAによるオフラインアプリ化ができません。
 
 
 ***

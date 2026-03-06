@@ -14,7 +14,10 @@
             <select id="langSelect" class="lang-dropdown"></select>
             
             <button id="btn" class="main-record-btn">録音開始</button>
-            <button id="copyBtn" class="copy-btn">📋 内容をコピー</button>
+            <div class="copy-split">
+                <button id="copyBtn" class="copy-btn">📋 内容をコピー</button>
+                <button id="copyOrganizeBtn" class="copy-btn">📋 整理プロンプト付きでコピー</button>
+            </div>
         </div>
 
         <div id="result"></div>
@@ -24,7 +27,6 @@
         </div>
     </div>
 
-    <script src="languages.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>

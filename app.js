@@ -1,10 +1,94 @@
 // app.js
+import { SUPPORTED_LANGUAGES } from './languages.js';
+
+/**
+ * Service Worker管理
+ * バージョン管理と自動更新機能
+ */
+let serviceWorkerContainer = null;
+let currentCacheVersion = null;
+
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('sw.js', { type: 'module'}).then((registration) => {
+        serviceWorkerContainer = registration;
+        
+        // 定期的にアップデートを確認（30秒ごと）
+        setInterval(() => {
+            registration.update();
+        }, 30000);
+        
+        // Service Workerの状態変化を監視
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        // 新しいService Workerがインストールされた
+                        notifyServiceWorkerUpdate();
+                    }
+                });
+            }
+        });
+        
+        // 現在のキャッシュバージョンを取得
+        if (navigator.serviceWorker.controller) {
+            getCacheVersion();
+        }
+    }).catch((error) => {
+        console.log('[App] Service Worker registration failed:', error);
+    });
+    
+    // Service Workerからのメッセージを受け取る
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        const { type, version } = event.data;
+        if (type === 'CACHE_VERSION') {
+            currentCacheVersion = version;
+            console.log('[App] Current cache version:', version);
+        }
+    });
+}
+
+/**
+ * Service Workerからキャッシュバージョンを取得
+ */
+function getCacheVersion() {
+    if (navigator.serviceWorker.controller) {
+        const messageChannel = new MessageChannel();
+        navigator.serviceWorker.controller.postMessage(
+            { type: 'GET_CACHE_VERSION' },
+            [messageChannel.port2]
+        );
+        
+        messageChannel.port1.onmessage = (event) => {
+            if (event.data.type === 'CACHE_VERSION') {
+                currentCacheVersion = event.data.version;
+            }
+        };
+    }
+}
+
+/**
+ * Service Worker更新通知
+ * ユーザーにページの再読み込みを促す
+ */
+function notifyServiceWorkerUpdate() {
+    const message = 'アプリケーションが更新されました。ページを再読み込みしてください。';
+    
+    // コンソール通知
+    console.log('[App] ' + message);
+    
+    // オプション：ユーザー通知の実装
+    // 以下のコメントを削除してカスタム通知を表示
+    /*
+    if (confirm(message + '\n\nOKで再読み込みします。')) {
+        window.location.reload();
+    }
+    */
 }
 
 const btn = document.getElementById('btn');
 const copyBtn = document.getElementById('copyBtn');
+const copyOrganizeBtn = document.getElementById('copyOrganizeBtn');
 const resetBtn = document.getElementById('resetBtn');
 const resultDiv = document.getElementById('result');
 const langSelect = document.getElementById('langSelect');
@@ -23,6 +107,7 @@ const updateUI = () => {
     btn.textContent = isRecording ? currentLangConfig.ui.stop : currentLangConfig.ui.start;
     
     copyBtn.textContent = currentLangConfig.ui.copy;
+    if (copyOrganizeBtn) copyOrganizeBtn.textContent = currentLangConfig.ui.organizeCopy || currentLangConfig.ui.copy;
     resetBtn.textContent = currentLangConfig.ui.reset;
 };
 
@@ -102,6 +187,18 @@ if (!SpeechRecognition) {
             setTimeout(() => copyBtn.textContent = originalText, 1500);
         });
     };
+
+    if (copyOrganizeBtn) {
+        copyOrganizeBtn.onclick = () => {
+            const text = resultDiv.textContent || "";
+            const prompt = currentLangConfig.ui.organizePrompt || "";
+            navigator.clipboard.writeText(prompt + text).then(() => {
+                const originalText = copyOrganizeBtn.textContent;
+                copyOrganizeBtn.textContent = currentLangConfig.ui.copyDone;
+                setTimeout(() => copyOrganizeBtn.textContent = originalText, 1500);
+            });
+        };
+    }
 
     resetBtn.onclick = () => {
         if (confirm(currentLangConfig.ui.confirmReset)) {

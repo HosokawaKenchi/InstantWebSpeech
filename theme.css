@@ -20,6 +20,16 @@ html, body {
     flex-shrink: 0;
 }
 
+/* copyボタンを左右に2分割するラッパー */
+.copy-split {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.copy-split button {
+    width: 50%;
+}
+
 /* ボタンの共通設定：横いっぱいに広がる */
 button {
     width: 100%;

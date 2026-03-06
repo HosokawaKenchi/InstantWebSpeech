@@ -18,7 +18,7 @@ async function loadCacheConfig() {
     try {
         const response = await fetch('manifest.json');
         const manifest = await response.json();
-        CACHE_VERSION = manifest.cache_version || 'v1.0.0';
+        CACHE_VERSION = manifest.cache_version || 'v1.0.1';
         CACHE_FILES = manifest.cache_files || [
             'index.html',
             'app.js',
@@ -30,7 +30,7 @@ async function loadCacheConfig() {
         ];
     } catch (error) {
         console.warn('Failed to load manifest.json, using defaults:', error);
-        CACHE_VERSION = 'v1.0.0';
+        CACHE_VERSION = 'v1.0.1';
         CACHE_FILES = [
             'index.html',
             'app.js',

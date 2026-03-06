@@ -2,6 +2,76 @@
 import { SUPPORTED_LANGUAGES } from './languages.js';
 
 /**
+ * 設定管理
+ */
+let settings = {
+    logCount: 0
+};
+
+function loadSettings() {
+    const saved = localStorage.getItem('settings');
+    if (saved) {
+        settings = JSON.parse(saved);
+    }
+    logCountInput.value = settings.logCount;
+}
+
+function saveSettings() {
+    settings.logCount = parseInt(logCountInput.value) || 0;
+    localStorage.setItem('settings', JSON.stringify(settings));
+}
+
+/**
+ * ログ管理
+ */
+function getLogKeys() {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('log_')) {
+            keys.push(key);
+        }
+    }
+    return keys.sort();
+}
+
+function saveLog(text) {
+    if (settings.logCount === 0) return;
+    const timestamp = new Date().toISOString().replace('T', 'T').replace(/\..+/, '');
+    const key = 'log_' + timestamp;
+    localStorage.setItem(key, text);
+    
+    // 古いログを削除
+    const keys = getLogKeys();
+    while (keys.length > settings.logCount) {
+        localStorage.removeItem(keys.shift());
+    }
+}
+
+function deleteAllLogs() {
+    const keys = getLogKeys();
+    keys.forEach(key => localStorage.removeItem(key));
+}
+
+function getLatestLog() {
+    const keys = getLogKeys();
+    if (keys.length === 0) return null;
+    return localStorage.getItem(keys[keys.length - 1]);
+}
+
+function showLogs() {
+    logsList.innerHTML = '';
+    const keys = getLogKeys();
+    keys.forEach(key => {
+        const timestamp = key.replace('log_', '');
+        const text = localStorage.getItem(key);
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>${timestamp}</strong><br>${text}`;
+        logsList.appendChild(div);
+    });
+}
+
+/**
  * Service Worker管理
  * バージョン管理と自動更新機能
  */
@@ -87,11 +157,23 @@ function notifyServiceWorkerUpdate() {
 }
 
 const btn = document.getElementById('btn');
+const stopControls = document.getElementById('stopControls');
+const stopBtn = document.getElementById('stopBtn');
+const restartBtn = document.getElementById('restartBtn');
 const copyBtn = document.getElementById('copyBtn');
 const copyOrganizeBtn = document.getElementById('copyOrganizeBtn');
 const resetBtn = document.getElementById('resetBtn');
 const resultDiv = document.getElementById('result');
 const langSelect = document.getElementById('langSelect');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsDialog = document.getElementById('settingsDialog');
+const logsDialog = document.getElementById('logsDialog');
+const logCountInput = document.getElementById('logCountInput');
+const viewLogsBtn = document.getElementById('viewLogsBtn');
+const deleteAllLogsBtn = document.getElementById('deleteAllLogsBtn');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const closeLogsBtn = document.getElementById('closeLogsBtn');
+const logsList = document.getElementById('logsList');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 let currentLangConfig = SUPPORTED_LANGUAGES[0]; // デフォルトは日本語
@@ -103,8 +185,12 @@ const updateUI = () => {
     
     // ボタンのテキストを現在の言語設定に合わせて更新
     // 録音中かどうかでメインボタンの文字を出し分ける
-    const isRecording = btn.classList.contains('recording');
-    btn.textContent = isRecording ? currentLangConfig.ui.stop : currentLangConfig.ui.start;
+    const isRecording = stopControls.style.display !== 'none';
+    if (isRecording) {
+        stopBtn.textContent = currentLangConfig.ui.stop;
+    } else {
+        btn.textContent = currentLangConfig.ui.start;
+    }
     
     copyBtn.textContent = currentLangConfig.ui.copy;
     if (copyOrganizeBtn) copyOrganizeBtn.textContent = currentLangConfig.ui.organizeCopy || currentLangConfig.ui.copy;
@@ -112,6 +198,13 @@ const updateUI = () => {
 };
 
 window.onload = () => {
+    loadSettings();
+    
+    // 設定が行われていない場合、強制的にダイアログを開く
+    if (!localStorage.getItem('settings')) {
+        settingsDialog.classList.add('show');
+    }
+    
     const savedText = localStorage.getItem('transcription_data');
     if (savedText) {
         resultDiv.textContent = savedText;
@@ -131,12 +224,39 @@ window.onload = () => {
         langSelect.value = savedLang;
     }
     
+    // 初期表示：録音開始ボタンのみ表示
+    stopControls.style.display = 'none';
+    
     updateUI(); // 初回表示時のUI更新
 };
 
 langSelect.onchange = () => {
     localStorage.setItem('selected_lang', langSelect.value);
     updateUI(); // 言語変更時にUIを更新
+};
+
+settingsBtn.onclick = () => {
+    settingsDialog.classList.add('show');
+};
+
+closeSettingsBtn.onclick = () => {
+    saveSettings();
+    settingsDialog.classList.remove('show');
+};
+
+viewLogsBtn.onclick = () => {
+    showLogs();
+    logsDialog.classList.add('show');
+};
+
+deleteAllLogsBtn.onclick = () => {
+    if (confirm('ログを全部削除しますか？')) {
+        deleteAllLogs();
+    }
+};
+
+closeLogsBtn.onclick = () => {
+    logsDialog.classList.remove('show');
 };
 
 if (!SpeechRecognition) {
@@ -154,18 +274,46 @@ if (!SpeechRecognition) {
             recognition.start();
             
             isRecording = true;
-            btn.classList.add('recording'); // 録音中状態をクラスで管理
-            btn.textContent = currentLangConfig.ui.stop;
-            btn.style.background = "#dc3545";
+            btn.style.display = 'none';
+            stopControls.style.display = 'flex';
+            stopBtn.textContent = currentLangConfig.ui.stop;
+            stopBtn.style.background = "#dc3545";
+            restartBtn.style.background = "#ffc107";
             langSelect.disabled = true;
-        } else {
+        }
+    };
+
+    stopBtn.onclick = () => {
+        if (isRecording) {
             recognition.stop();
             
             isRecording = false;
-            btn.classList.remove('recording');
+            stopControls.style.display = 'none';
+            btn.style.display = 'block';
             btn.textContent = currentLangConfig.ui.start;
             btn.style.background = "#007bff";
             langSelect.disabled = false;
+            
+            // ログ保存
+            const text = resultDiv.textContent;
+            if (settings.logCount > 0) {
+                saveLog(text);
+            }
+        }
+    };
+
+    restartBtn.onclick = () => {
+        if (isRecording) {
+            recognition.stop();
+            
+            isRecording = false;
+            stopControls.style.display = 'none';
+            btn.style.display = 'block';
+            btn.textContent = currentLangConfig.ui.start;
+            btn.style.background = "#007bff";
+            langSelect.disabled = false;
+            
+            // ログ保存なし
         }
     };
 
@@ -175,7 +323,9 @@ if (!SpeechRecognition) {
             text += event.results[i][0].transcript;
         }
         resultDiv.textContent = text;
-        localStorage.setItem('transcription_data', text);
+        if (settings.logCount === 0) {
+            localStorage.setItem('transcription_data', text);
+        }
         window.scrollTo(0, document.body.scrollHeight);
     };
 
@@ -203,12 +353,32 @@ if (!SpeechRecognition) {
     resetBtn.onclick = () => {
         if (confirm(currentLangConfig.ui.confirmReset)) {
             resultDiv.textContent = "";
-            localStorage.removeItem('transcription_data');
+            if (settings.logCount === 0) {
+                localStorage.removeItem('transcription_data');
+            }
             // 録音中のリセット対応
             if (isRecording) {
                 recognition.stop();
-                setTimeout(() => recognition.start(), 100);
+                setTimeout(() => {
+                    stopControls.style.display = 'none';
+                    btn.style.display = 'block';
+                    btn.textContent = currentLangConfig.ui.start;
+                    btn.style.background = "#007bff";
+                    langSelect.disabled = false;
+                    isRecording = false;
+                }, 100);
             }
         }
     };
 }
+
+// ウィンドウ閉じる際の処理
+window.addEventListener('beforeunload', (event) => {
+    const currentText = resultDiv.textContent;
+    const latestLog = getLatestLog();
+    if (latestLog !== currentText && currentText.trim() !== '') {
+        if (settings.logCount > 0) {
+            saveLog(currentText);
+        }
+    }
+});

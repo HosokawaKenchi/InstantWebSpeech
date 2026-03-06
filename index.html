@@ -11,12 +11,22 @@
     <div class="app-container">
 
         <div class="top-controls">
-            <select id="langSelect" class="lang-dropdown"></select>
-            
-            <button id="btn" class="main-record-btn">録音開始</button>
-            <div class="copy-split">
-                <button id="copyBtn" class="copy-btn">📋 内容をコピー</button>
-                <button id="copyOrganizeBtn" class="copy-btn">📋 整理プロンプト付きでコピー</button>
+            <div class="control-row">
+                <select id="langSelect" class="lang-dropdown"></select>
+                <button id="settingsBtn" class="settings-btn">⚙️</button>
+            </div>
+            <div class="control-row">
+                <button id="btn" class="main-record-btn">録音開始</button>
+                <div id="stopControls" class="stop-controls" style="display: none;">
+                    <button id="stopBtn" class="stop-btn">停止</button>
+                    <button id="restartBtn" class="restart-btn">やり直し</button>
+                </div>
+            </div>
+            <div class="control-row">
+                <div class="copy-split">
+                    <button id="copyBtn" class="copy-btn">📋 内容をコピー</button>
+                    <button id="copyOrganizeBtn" class="copy-btn">📋 整理プロンプト付きでコピー</button>
+                </div>
             </div>
         </div>
 
@@ -24,6 +34,30 @@
 
         <div class="bottom-controls">
             <button id="resetBtn" class="danger-link-btn">🗑️ 文字起こし内容を消去</button>
+        </div>
+    </div>
+
+    <div id="settingsDialog" class="dialog">
+        <div class="dialog-content">
+            <h2>設定</h2>
+            <p>ウェブで音声を外部に送信する Web Speech APIの音声認識を使用しています。</p>
+            <div class="setting-item">
+                <label for="logCountInput">ログを最大<input type="number" id="logCountInput" min="0" value="0">個まで保存する</label>
+            </div>
+            <p>ログを残す場合にはディスク内にデータが残るので、個人情報などを発話する際は、ディスク全体の暗号化に注意してください。</p>
+            <div class="dialog-buttons">
+                <button id="viewLogsBtn">ログを見る</button>
+                <button id="deleteAllLogsBtn">ログを全部削除</button>
+            </div>
+            <button id="closeSettingsBtn">閉じる</button>
+        </div>
+    </div>
+
+    <div id="logsDialog" class="dialog">
+        <div class="dialog-content">
+            <h2>ログ</h2>
+            <div id="logsList"></div>
+            <button id="closeLogsBtn">閉じる</button>
         </div>
     </div>
 

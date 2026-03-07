@@ -41,7 +41,7 @@ html, body {
 }
 
 .update-notification {
-    background-color: #ffc107;
+    background-color: hsl(156, 76%, 42%);
     color: #000;
     padding: 8px 12px;
     text-align: center;

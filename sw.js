@@ -18,25 +18,29 @@ async function loadCacheConfig() {
     try {
         const response = await fetch('manifest.json');
         const manifest = await response.json();
-        CACHE_VERSION = manifest.cache_version || 'v1.0.2';
+        CACHE_VERSION = manifest.cache_version || 'v1.0.3';
         CACHE_FILES = manifest.cache_files || [
             'index.html',
             'app.js',
             'theme.css',
             'languages.js',
-            'icon.png',
+            'icon.svg',
+            'icon-192.png',
+            'icon-512.png',
             'manifest.json',
             'sw.js'
         ];
     } catch (error) {
         console.warn('Failed to load manifest.json, using defaults:', error);
-        CACHE_VERSION = 'v1.0.2';
+        CACHE_VERSION = 'v1.0.3';
         CACHE_FILES = [
             'index.html',
             'app.js',
             'theme.css',
             'languages.js',
-            'icon.png',
+            'icon.svg',
+            'icon-192.png',
+            'icon-512.png',
             'manifest.json',
             'sw.js'
         ];

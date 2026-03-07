@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs5" />
+  <!-- Microphone body -->
+  <rect
+     x="75"
+     y="60"
+     width="50"
+     height="80"
+     rx="25"
+     fill="#007bff"
+     id="rect1" />
+  <!-- Microphone head -->
+  <circle
+     cx="100"
+     cy="40"
+     r="20"
+     fill="#007bff"
+     id="circle1" />
+  <!-- Stand -->
+  <rect
+     x="95"
+     y="140"
+     width="10"
+     height="40"
+     fill="#333"
+     id="rect2" />
+  <!-- Base -->
+  <rect
+     x="85"
+     y="170"
+     width="30"
+     height="10"
+     rx="5"
+     fill="#333"
+     id="rect3" />
+  <!-- Sound waves -->
+  <path
+     d="M 60 80 Q 50 80 50 90 Q 50 100 60 100"
+     fill="none"
+     stroke="#007bff"
+     stroke-width="4"
+     stroke-linecap="round"
+     id="path3" />
+  <path
+     d="M 55 85 Q 40 85 40 100 Q 40 115 55 115"
+     fill="none"
+     stroke="#007bff"
+     stroke-width="4"
+     stroke-linecap="round"
+     id="path4" />
+  <path
+     d="M 50 90 Q 30 90 30 110 Q 30 130 50 130"
+     fill="none"
+     stroke="#007bff"
+     stroke-width="4"
+     stroke-linecap="round"
+     id="path5" />
+</svg>

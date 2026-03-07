@@ -82,10 +82,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js', { type: 'module'}).then((registration) => {
         serviceWorkerContainer = registration;
         
-        // 定期的にアップデートを確認（30秒ごと）
-        setInterval(() => {
-            registration.update();
-        }, 30000);
+        // ページロード時に一度だけアップデートを確認
+        registration.update();
         
         // Service Workerの状態変化を監視
         registration.addEventListener('updatefound', () => {

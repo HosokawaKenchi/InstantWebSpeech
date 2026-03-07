@@ -70,6 +70,11 @@ button {
     cursor: pointer;
     font-weight: bold;
     display: block;
+    transition: filter 0.2s ease;
+}
+
+button:hover {
+    filter: brightness(1.1);
 }
 
 /* 録音ボタン：一番大きく目立たせる */

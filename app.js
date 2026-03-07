@@ -142,18 +142,25 @@ function getCacheVersion() {
  * ユーザーにページの再読み込みを促す
  */
 function notifyServiceWorkerUpdate() {
-    const message = 'アプリケーションが更新されました。ページを再読み込みしてください。';
+    const message = currentLangConfig.ui.updateMessage;
     
     // コンソール通知
     console.log('[App] ' + message);
     
-    // オプション：ユーザー通知の実装
-    // 以下のコメントを削除してカスタム通知を表示
-    /*
-    if (confirm(message + '\n\nOKで再読み込みします。')) {
-        window.location.reload();
+    // UI通知を表示
+    const notificationDiv = document.getElementById('updateNotification');
+    if (notificationDiv) {
+        notificationDiv.style.display = 'flex';
     }
-    */
+    
+    // 再読み込みボタンのイベントリスナー
+    const reloadBtn = document.getElementById('reloadBtn');
+    if (reloadBtn) {
+        reloadBtn.textContent = currentLangConfig.ui.reload;
+        reloadBtn.addEventListener('click', () => {
+            window.location.reload();
+        });
+    }
 }
 
 const btn = document.getElementById('btn');
@@ -188,6 +195,7 @@ const updateUI = () => {
     const isRecording = stopControls.style.display !== 'none';
     if (isRecording) {
         stopBtn.textContent = currentLangConfig.ui.stop;
+        restartBtn.textContent = currentLangConfig.ui.restart;
     } else {
         btn.textContent = currentLangConfig.ui.start;
     }
@@ -195,6 +203,33 @@ const updateUI = () => {
     copyBtn.textContent = currentLangConfig.ui.copy;
     if (copyOrganizeBtn) copyOrganizeBtn.textContent = currentLangConfig.ui.organizeCopy || currentLangConfig.ui.copy;
     resetBtn.textContent = currentLangConfig.ui.reset;
+    
+    // 設定ダイアログ
+    const settingsTitle = document.querySelector('#settingsDialog h2');
+    if (settingsTitle) settingsTitle.textContent = currentLangConfig.ui.settings;
+    const settingsP1 = document.querySelector('#settingsDialog p:first-of-type');
+    if (settingsP1) settingsP1.textContent = currentLangConfig.ui.settingsMessage1;
+    const settingsLabel = document.querySelector('#settingsDialog label');
+    if (settingsLabel) {
+        const labelText = currentLangConfig.ui.settingsLabel.replace('{0}', '<input type="number" id="logCountInput" min="0" value="0">');
+        settingsLabel.innerHTML = labelText;
+    }
+    const settingsP2 = document.querySelector('#settingsDialog p:last-of-type');
+    if (settingsP2) settingsP2.textContent = currentLangConfig.ui.settingsMessage2;
+    viewLogsBtn.textContent = currentLangConfig.ui.viewLogs;
+    deleteAllLogsBtn.textContent = currentLangConfig.ui.deleteAllLogs;
+    closeSettingsBtn.textContent = currentLangConfig.ui.close;
+    
+    // ログダイアログ
+    const logsTitle = document.querySelector('#logsDialog h2');
+    if (logsTitle) logsTitle.textContent = currentLangConfig.ui.logs;
+    closeLogsBtn.textContent = currentLangConfig.ui.close;
+    
+    // 更新通知
+    const updateSpan = document.querySelector('#updateNotification span');
+    if (updateSpan) updateSpan.textContent = currentLangConfig.ui.updateMessage;
+    const reloadBtn = document.getElementById('reloadBtn');
+    if (reloadBtn) reloadBtn.textContent = currentLangConfig.ui.reload;
 };
 
 window.onload = () => {

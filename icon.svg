@@ -7,6 +7,24 @@
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs5" />
+  <circle
+     style="fill:#000000;stroke:none;stroke-width:2.86689;stroke-opacity:1;fill-opacity:0.30031446"
+     id="path1-4-2"
+     cx="101.81004"
+     cy="101.81004"
+     r="94.532013" />
+  <circle
+     style="fill:#000000;stroke:none;stroke-width:2.86689;stroke-opacity:1"
+     id="path1-4"
+     cx="100"
+     cy="100"
+     r="94.532013" />
+  <circle
+     style="fill:#ffffff;stroke-width:2.812;stroke:none;stroke-opacity:1"
+     id="path1"
+     cx="100"
+     cy="100"
+     r="92.721977" />
   <!-- Microphone body -->
   <rect
      x="75"
@@ -42,21 +60,21 @@
      id="rect3" />
   <!-- Sound waves -->
   <path
-     d="M 60 80 Q 50 80 50 90 Q 50 100 60 100"
+     d="m 69.898108,90.000001 q -10,0 -10,9.999999 0,10 10,10"
      fill="none"
      stroke="#007bff"
      stroke-width="4"
      stroke-linecap="round"
      id="path3" />
   <path
-     d="M 55 85 Q 40 85 40 100 Q 40 115 55 115"
+     d="m 60.544435,85.000001 q -15,0 -15,14.999999 0,15 15,15"
      fill="none"
      stroke="#007bff"
      stroke-width="4"
      stroke-linecap="round"
      id="path4" />
   <path
-     d="M 50 90 Q 30 90 30 110 Q 30 130 50 130"
+     d="m 51.310044,80.000002 q -20,0 -20,19.999998 0,20 20,20"
      fill="none"
      stroke="#007bff"
      stroke-width="4"

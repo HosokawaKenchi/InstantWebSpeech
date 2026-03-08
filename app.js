@@ -14,11 +14,22 @@ function loadSettings() {
         settings = JSON.parse(saved);
     }
     logCountInput.value = settings.logCount;
+    
+    // カスタムプロンプトを読み込む
+    const customPrompt = localStorage.getItem('custom_organize_prompt');
+    if (customPromptInput && customPrompt) {
+        customPromptInput.value = customPrompt;
+    }
 }
 
 function saveSettings() {
     settings.logCount = parseInt(logCountInput.value) || 0;
     localStorage.setItem('settings', JSON.stringify(settings));
+    
+    // カスタムプロンプトを保存
+    if (customPromptInput) {
+        localStorage.setItem('custom_organize_prompt', customPromptInput.value);
+    }
 }
 
 /**
@@ -167,6 +178,7 @@ const stopBtn = document.getElementById('stopBtn');
 const restartBtn = document.getElementById('restartBtn');
 const copyBtn = document.getElementById('copyBtn');
 const copyOrganizeBtn = document.getElementById('copyOrganizeBtn');
+const customPromptInput = document.getElementById('customPromptInput');
 const resetBtn = document.getElementById('resetBtn');
 const resultDiv = document.getElementById('result');
 const langSelect = document.getElementById('langSelect');
@@ -374,7 +386,9 @@ if (!SpeechRecognition) {
     if (copyOrganizeBtn) {
         copyOrganizeBtn.onclick = () => {
             const text = resultDiv.textContent || "";
-            const prompt = currentLangConfig.ui.organizePrompt || "";
+            // カスタムプロンプトを優先的に使用
+            const customPrompt = localStorage.getItem('custom_organize_prompt');
+            const prompt = (customPrompt && customPrompt.trim()) ? customPrompt : (currentLangConfig.ui.organizePrompt || "");
             navigator.clipboard.writeText(prompt + text).then(() => {
                 const originalText = copyOrganizeBtn.textContent;
                 copyOrganizeBtn.textContent = currentLangConfig.ui.copyDone;

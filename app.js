@@ -217,6 +217,12 @@ const updateUI = () => {
     // 設定ダイアログ
     const settingsTitle = document.querySelector('#settingsDialog h2');
     if (settingsTitle) settingsTitle.textContent = currentLangConfig.ui.settings;
+    const externalH3 = document.getElementById('externalDataTitle');
+    if (externalH3) externalH3.textContent = currentLangConfig.ui.settingsExternalTitle || '';
+    const internalH3 = document.getElementById('internalDataTitle');
+    if (internalH3) internalH3.textContent = currentLangConfig.ui.settingsInternalTitle || '';
+    const aiH3 = document.getElementById('aiAssistTitle');
+    if (aiH3) aiH3.textContent = currentLangConfig.ui.settingsAIAssistTitle || '';
     const settingsP1 = document.querySelector('#settingsDialog p:first-of-type');
     if (settingsP1) settingsP1.textContent = currentLangConfig.ui.settingsMessage1;
     const settingsLabel = document.querySelector('#settingsDialog label');
@@ -224,6 +230,9 @@ const updateUI = () => {
         const labelText = currentLangConfig.ui.settingsLabel.replace('{0}', '<input type="number" id="logCountInput" min="0" value="0">');
         settingsLabel.innerHTML = labelText;
     }
+    const customPromptLabel = document.querySelector('#settingsDialog label[for="customPromptInput"]');
+    if (customPromptLabel) customPromptLabel.textContent = currentLangConfig.ui.customPromptLabel || '';
+    if (customPromptInput) customPromptInput.placeholder = currentLangConfig.ui.customPromptPlaceholder || '';
     const settingsP2 = document.querySelector('#settingsDialog p:last-of-type');
     if (settingsP2) settingsP2.textContent = currentLangConfig.ui.settingsMessage2;
     viewLogsBtn.textContent = currentLangConfig.ui.viewLogs;

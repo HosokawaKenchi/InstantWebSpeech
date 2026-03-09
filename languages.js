@@ -22,7 +22,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "再読み込み",
             settingsMessage1: "ウェブで音声を外部に送信する Web Speech APIの音声認識を使用しています。",
             settingsLabel: "ログを最大{0}個まで保存する",
-            settingsMessage2: "ログを残す場合にはディスク内にデータが残るので、個人情報などを発話する際は、ディスク全体の暗号化に注意してください。"
+            settingsMessage2: "ログを残す場合にはディスク内にデータが残るので、個人情報などを発話する際は、ディスク全体の暗号化に注意してください。",
+            customPromptLabel: "整理プロンプト：",
+            customPromptPlaceholder: "カスタムプロンプトを入力してください（空白の場合はデフォルト値を使用）"
+            ,
+            settingsExternalTitle: "外部データ送信",
+            settingsInternalTitle: "内部データ保存",
+            settingsAIAssistTitle: "AI用補助設定"
         }
     },
     { 
@@ -47,7 +53,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "Reload",
             settingsMessage1: "This app uses Web Speech API for speech recognition, which sends audio data to external servers.",
             settingsLabel: "Save up to {0} logs",
-            settingsMessage2: "When saving logs, data remains on disk. Please ensure full disk encryption when speaking personal information."
+            settingsMessage2: "When saving logs, data remains on disk. Please ensure full disk encryption when speaking personal information.",
+            customPromptLabel: "Organizing prompt:",
+            customPromptPlaceholder: "Enter a custom prompt (leave blank to use default)"
+            ,
+            settingsExternalTitle: "External data transmission",
+            settingsInternalTitle: "Local data storage",
+            settingsAIAssistTitle: "AI assistance settings"
         }
     },
     { 
@@ -72,7 +84,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "Recargar",
             settingsMessage1: "Esta aplicación utiliza la API de Web Speech para el reconocimiento de voz, que envía datos de audio a servidores externos.",
             settingsLabel: "Guardar hasta {0} registros",
-            settingsMessage2: "Al guardar registros, los datos permanecen en el disco. Asegúrese de cifrar completamente el disco al hablar de información personal."
+            settingsMessage2: "Al guardar registros, los datos permanecen en el disco. Asegúrese de cifrar completamente el disco al hablar de información personal.",
+            customPromptLabel: "Prompt de organización:",
+            customPromptPlaceholder: "Ingrese un prompt personalizado (deje en blanco para usar el valor predeterminado)"
+            ,
+            settingsExternalTitle: "Envío de datos externos",
+            settingsInternalTitle: "Almacenamiento de datos interno",
+            settingsAIAssistTitle: "Ajustes de asistencia de IA"
         }
     },
     { 
@@ -97,7 +115,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "Recharger",
             settingsMessage1: "Cette application utilise l'API Web Speech pour la reconnaissance vocale, qui envoie des données audio à des serveurs externes.",
             settingsLabel: "Enregistrer jusqu'à {0} journaux",
-            settingsMessage2: "Lors de l'enregistrement des journaux, les données restent sur le disque. Veillez à chiffrer complètement le disque lorsque vous parlez d'informations personnelles."
+            settingsMessage2: "Lors de l'enregistrement des journaux, les données restent sur le disque. Veillez à chiffrer complètement le disque lorsque vous parlez d'informations personnelles.",
+            customPromptLabel: "Invite de tri :",
+            customPromptPlaceholder: "Saisissez une invite personnalisée (laisser vide pour utiliser la valeur par défaut)"
+            ,
+            settingsExternalTitle: "Envoi de données externes",
+            settingsInternalTitle: "Stockage de données local",
+            settingsAIAssistTitle: "Paramètres d'assistance IA"
         }
     },
     { 
@@ -122,7 +146,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "Neu laden",
             settingsMessage1: "Diese App verwendet die Web Speech API für die Spracherkennung, die Audiodaten an externe Server sendet.",
             settingsLabel: "Bis zu {0} Protokolle speichern",
-            settingsMessage2: "Beim Speichern von Protokollen bleiben die Daten auf der Festplatte. Stellen Sie bei der Erwähnung personenbezogener Daten sicher, dass die Festplatte vollständig verschlüsselt ist."
+            settingsMessage2: "Beim Speichern von Protokollen bleiben die Daten auf der Festplatte. Stellen Sie bei der Erwähnung personenbezogener Daten sicher, dass die Festplatte vollständig verschlüsselt ist.",
+            customPromptLabel: "Organisierender Prompt:",
+            customPromptPlaceholder: "Geben Sie einen benutzerdefinierten Prompt ein (leer lassen, um den Standard zu verwenden)"
+            ,
+            settingsExternalTitle: "Externe Datenübertragung",
+            settingsInternalTitle: "Interne Datenspeicherung",
+            settingsAIAssistTitle: "KI-Hilfseinstellungen"
         }
     },
     { 
@@ -147,7 +177,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "إعادة تحميل",
             settingsMessage1: "يستخدم هذا التطبيق Web Speech API للتعرف على الكلام، والذي يرسل بيانات الصوت إلى خوادم خارجية.",
             settingsLabel: "حفظ حتى {0} سجلات",
-            settingsMessage2: "عند حفظ السجلات، تبقى البيانات على القرص. يرجى التأكد من تشفير القرص بالكامل عند التحدث عن معلومات شخصية."
+            settingsMessage2: "عند حفظ السجلات، تبقى البيانات على القرص. يرجى التأكد من تشفير القرص بالكامل عند التحدث عن معلومات شخصية.",
+            customPromptLabel: "مطالبة التنظيم:",
+            customPromptPlaceholder: "أدخل مطالبة مخصصة (اتركها فارغة لاستخدام الافتراضي)"
+            ,
+            settingsExternalTitle: "إرسال البيانات الخارجية",
+            settingsInternalTitle: "تخزين البيانات محليًا",
+            settingsAIAssistTitle: "إعدادات مساعدة الذكاء الاصطناعي"
         }
     },
     { 
@@ -172,7 +208,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "다시 로드",
             settingsMessage1: "이 앱은 음성 인식을 위해 Web Speech API를 사용하며, 이는 오디오 데이터를 외부 서버로 보냅니다.",
             settingsLabel: "최대 {0} 개 로그 저장",
-            settingsMessage2: "로그를 저장할 때 데이터가 디스크에 남아 있습니다. 개인 정보를 말할 때는 전체 디스크 암호화를 확인하십시오."
+            settingsMessage2: "로그를 저장할 때 데이터가 디스크에 남아 있습니다. 개인 정보를 말할 때는 전체 디스크 암호화를 확인하십시오.",
+            customPromptLabel: "정리 프롬프트:",
+            customPromptPlaceholder: "맞춤 프롬프트를 입력하세요(기본값 사용 시 비워두세요)"
+            ,
+            settingsExternalTitle: "외부 데이터 전송",
+            settingsInternalTitle: "내부 데이터 저장",
+            settingsAIAssistTitle: "AI 보조 설정"
         }
     },
     {
@@ -197,7 +239,13 @@ export const SUPPORTED_LANGUAGES = [
             reload: "重新加载",
             settingsMessage1: "此应用使用 Web Speech API 进行语音识别，该 API 会将音频数据发送到外部服务器。",
             settingsLabel: "最多保存 {0} 个日志",
-            settingsMessage2: "保存日志时，数据会保留在磁盘上。在谈论个人信息时，请确保完全加密磁盘。"
+            settingsMessage2: "保存日志时，数据会保留在磁盘上。在谈论个人信息时，请确保完全加密磁盘。",
+            customPromptLabel: "整理提示：",
+            customPromptPlaceholder: "请输入自定义提示（留空以使用默认值）"
+            ,
+            settingsExternalTitle: "外部数据发送",
+            settingsInternalTitle: "本地数据保存",
+            settingsAIAssistTitle: "AI 辅助设置"
         }
     }
 ];

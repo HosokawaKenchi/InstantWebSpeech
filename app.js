@@ -35,6 +35,43 @@ function saveSettings() {
 /**
  * ログ管理
  */
+
+// localStorage 使用量の監視定数
+const STORAGE_LIMITS = {
+    ESTIMATED_LIMIT: 5 * 1024 * 1024, // 5MB（保守的な推定）
+    WARNING_THRESHOLD: 0.80,            // 80%を超えたら警告
+    SAFETY_MARGIN: 0.05                 // ログ保存時に5%の安全マージンを確保
+};
+
+/**
+ * localStorage の現在の推定使用量を計算（バイト単位）
+ */
+function getLocalStorageUsage() {
+    let size = 0;
+    for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+            size += localStorage[key].length + key.length;
+        }
+    }
+    return size;
+}
+
+/**
+ * localStorage の使用率を % で返す
+ */
+function getLocalStorageUsagePercent() {
+    return (getLocalStorageUsage() / STORAGE_LIMITS.ESTIMATED_LIMIT) * 100;
+}
+
+/**
+ * storage がsafety margin 超過判定
+ */
+function isStorageNearLimit() {
+    const usage = getLocalStorageUsage();
+    const threshold = STORAGE_LIMITS.ESTIMATED_LIMIT * (1 - STORAGE_LIMITS.SAFETY_MARGIN);
+    return usage > threshold;
+}
+
 function getLogKeys() {
     const keys = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -48,14 +85,42 @@ function getLogKeys() {
 
 function saveLog(text) {
     if (settings.logCount === 0) return;
+    
+    // storage が safety margin を超えている場合、古いログをさらに削除
+    const estimatedNewSize = text.length;
+    if (getLocalStorageUsage() + estimatedNewSize > STORAGE_LIMITS.ESTIMATED_LIMIT * (1 - STORAGE_LIMITS.SAFETY_MARGIN)) {
+        console.warn(`[App] Storage approaching limit (${getLocalStorageUsagePercent().toFixed(1)}%). Pruning old logs...`);
+        const keys = getLogKeys();
+        
+        // safety margin 達成までログを削除
+        let targetSize = STORAGE_LIMITS.ESTIMATED_LIMIT * (1 - STORAGE_LIMITS.SAFETY_MARGIN * 2);
+        while (keys.length > 0 && getLocalStorageUsage() > targetSize) {
+            localStorage.removeItem(keys.shift());
+            console.log('[App] Removed old log due to storage constraints.');
+        }
+    }
+    
+    // 最終チェック：新規ログを保存できるか
+    if (getLocalStorageUsage() + estimatedNewSize >= STORAGE_LIMITS.ESTIMATED_LIMIT * (1 - STORAGE_LIMITS.SAFETY_MARGIN)) {
+        console.error('[App] Storage limit reached. Cannot save new log.');
+        alert(currentLangConfig.ui.storageFullWarning || 'ストレージがいっぱいです。ログの保存に失敗しました。');
+        return;
+    }
+    
     const timestamp = new Date().toISOString().replace('T', 'T').replace(/\..+/, '');
     const key = 'log_' + timestamp;
     localStorage.setItem(key, text);
     
-    // 古いログを削除
+    // 設定されたログ数上限を超えた場合は削除
     const keys = getLogKeys();
     while (keys.length > settings.logCount) {
         localStorage.removeItem(keys.shift());
+    }
+    
+    // 警告ログ
+    const usagePercent = getLocalStorageUsagePercent();
+    if (usagePercent > STORAGE_LIMITS.WARNING_THRESHOLD * 100) {
+        console.warn(`[App] Storage usage is high: ${usagePercent.toFixed(1)}%`);
     }
 }
 
@@ -233,8 +298,10 @@ const updateUI = () => {
     const customPromptLabel = document.querySelector('#settingsDialog label[for="customPromptInput"]');
     if (customPromptLabel) customPromptLabel.textContent = currentLangConfig.ui.customPromptLabel || '';
     if (customPromptInput) customPromptInput.placeholder = currentLangConfig.ui.customPromptPlaceholder || '';
-    const settingsP2 = document.querySelector('#settingsDialog p:last-of-type');
+    const settingsP2 = document.getElementById('settingsMessage2');
     if (settingsP2) settingsP2.textContent = currentLangConfig.ui.settingsMessage2;
+    const storageH3 = document.getElementById('storageInfoTitle');
+    if (storageH3) storageH3.textContent = currentLangConfig.ui.storageInfoTitle || currentLangConfig.ui.storageInfoTitle;
     viewLogsBtn.textContent = currentLangConfig.ui.viewLogs;
     deleteAllLogsBtn.textContent = currentLangConfig.ui.deleteAllLogs;
     closeSettingsBtn.textContent = currentLangConfig.ui.close;
@@ -289,7 +356,30 @@ langSelect.onchange = () => {
     updateUI(); // 言語変更時にUIを更新
 };
 
+/**
+ * Storage 情報パネルを更新
+ */
+function updateStorageInfo() {
+    const storageInfo = document.getElementById('storageInfo');
+    if (!storageInfo) return;
+    
+    const usage = getLocalStorageUsage();
+    const limit = STORAGE_LIMITS.ESTIMATED_LIMIT;
+    const percent = getLocalStorageUsagePercent();
+    const usageMB = (usage / (1024 * 1024)).toFixed(2);
+    const limitMB = (limit / (1024 * 1024)).toFixed(1);
+    
+    const label = currentLangConfig.ui.storageUsageLabel || 'Usage:';
+    let message = `${label} ${usageMB} MB / ${limitMB} MB (${percent.toFixed(1)}%)`;
+    if (percent > STORAGE_LIMITS.WARNING_THRESHOLD * 100) {
+        const warn = currentLangConfig.ui.storageUsageWarning || '⚠️ Warning: storage is running low';
+        message += ` ${warn}`;
+    }
+    storageInfo.textContent = message;
+}
+
 settingsBtn.onclick = () => {
+    updateStorageInfo(); // settings ダイアログ表示時に情報を更新
     settingsDialog.classList.add('show');
 };
 
@@ -434,7 +524,12 @@ window.addEventListener('beforeunload', (event) => {
     const latestLog = getLatestLog();
     if (latestLog !== currentText && currentText.trim() !== '') {
         if (settings.logCount > 0) {
-            saveLog(currentText);
+            // storage チェック後に保存
+            if (!isStorageNearLimit()) {
+                saveLog(currentText);
+            } else {
+                console.warn('[App] Storage near limit. Auto-save skipped on unload.');
+            }
         }
     }
 });

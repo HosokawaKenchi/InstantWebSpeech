@@ -46,16 +46,24 @@
         <div class="dialog-content">
             <h2>設定</h2>
             <h3 id="externalDataTitle">外部データ送信</h3>
-            <p>ウェブで音声情報を外部に送信する Web Speech APIの音声認識を使用しています。</p>
-            <h3 id="internalDataTitle">内部データ保存</h3>
-            <div class="setting-item">
-                <label for="logCountInput">ログを最大<input type="number" id="logCountInput" min="0" value="0">個まで保存する</label>
+            <div class="setting-category">
+                <p>ウェブで音声情報を外部に送信する Web Speech APIの音声認識を使用しています。</p>
             </div>
-            <p>ログを残す場合にはディスク内にデータが残るので、個人情報などを発話する際は、ディスク全体の暗号化に注意してください。</p>
+            <h3 id="internalDataTitle">内部データ保存</h3>
+            <div class="setting-category">
+                <p id="settingsMessage2"></p>
+                <div class="setting-item">
+                    <label for="logCountInput">ログを最大<input type="number" id="logCountInput" min="0" value="0">個まで保存する</label>
+                </div>
+                <h4 id="storageInfoTitle">Storage 使用量</h4>
+                <p id="storageInfo"></p>
+            </div>
             <h3 id="aiAssistTitle">AI用補助設定</h3>
-            <div class="setting-item">
-                <label for="customPromptInput">整理プロンプト：</label>
-                <textarea id="customPromptInput" class="prompt-input" placeholder="カスタムプロンプトを入力してください（空白の場合はデフォルト値を使用）"></textarea>
+            <div class="setting-category">
+                <div class="setting-item">
+                    <label for="customPromptInput">整理プロンプト：</label>
+                    <textarea id="customPromptInput" class="prompt-input" placeholder="カスタムプロンプトを入力してください（空白の場合はデフォルト値を使用）"></textarea>
+                </div>
             </div>
             <div class="dialog-buttons">
                 <button id="viewLogsBtn">ログを見る</button>

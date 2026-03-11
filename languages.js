@@ -28,7 +28,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "外部データ送信",
             settingsInternalTitle: "内部データ保存",
-            settingsAIAssistTitle: "AI用補助設定"
+            settingsAIAssistTitle: "AI用補助設定",
+            storageInfoTitle: "Storage 使用量",
+            storageUsageLabel: "使用量:",
+            storageUsageWarning: "⚠️ 警告: 容量が逼迫しています",
+            storageFullWarning: "ストレージがいっぱいです。ログの保存に失敗しました。古いログを削除してください。"
         }
     },
     { 
@@ -59,7 +63,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "External data transmission",
             settingsInternalTitle: "Local data storage",
-            settingsAIAssistTitle: "AI assistance settings"
+            settingsAIAssistTitle: "AI assistance settings",
+            storageInfoTitle: "Storage Usage",
+            storageUsageLabel: "Usage:",
+            storageUsageWarning: "⚠️ Warning: storage is running low",
+            storageFullWarning: "Storage is full. Failed to save log. Please delete old logs."
         }
     },
     { 
@@ -90,7 +98,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "Envío de datos externos",
             settingsInternalTitle: "Almacenamiento de datos interno",
-            settingsAIAssistTitle: "Ajustes de asistencia de IA"
+            settingsAIAssistTitle: "Ajustes de asistencia de IA",
+            storageInfoTitle: "Uso de almacenamiento",
+            storageUsageLabel: "Uso:",
+            storageUsageWarning: "⚠️ Advertencia: el almacenamiento se está agotando",
+            storageFullWarning: "El almacenamiento está lleno. Error al guardar el registro. Por favor, elimine los registros antiguos."
         }
     },
     { 
@@ -121,7 +133,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "Envoi de données externes",
             settingsInternalTitle: "Stockage de données local",
-            settingsAIAssistTitle: "Paramètres d'assistance IA"
+            settingsAIAssistTitle: "Paramètres d'assistance IA",
+            storageInfoTitle: "Utilisation du stockage",
+            storageUsageLabel: "Utilisation:",
+            storageUsageWarning: "⚠️ Attention : l'espace disque se remplit",
+            storageFullWarning: "Le stockage est plein. Échec de l'enregistrement du journal. Veuillez supprimer les anciens journaux."
         }
     },
     { 
@@ -152,7 +168,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "Externe Datenübertragung",
             settingsInternalTitle: "Interne Datenspeicherung",
-            settingsAIAssistTitle: "KI-Hilfseinstellungen"
+            settingsAIAssistTitle: "KI-Hilfseinstellungen",
+            storageInfoTitle: "Speichernutzung",
+            storageUsageLabel: "Nutzung:",
+            storageUsageWarning: "⚠️ Warnung: Speicherplatz ist knapp",
+            storageFullWarning: "Der Speicher ist voll. Protokoll konnte nicht gespeichert werden. Bitte löschen Sie alte Protokolle."
         }
     },
     { 
@@ -183,7 +203,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "إرسال البيانات الخارجية",
             settingsInternalTitle: "تخزين البيانات محليًا",
-            settingsAIAssistTitle: "إعدادات مساعدة الذكاء الاصطناعي"
+            settingsAIAssistTitle: "إعدادات مساعدة الذكاء الاصطناعي",
+            storageInfoTitle: "استخدام التخزين",
+            storageUsageLabel: "الاستخدام:",
+            storageUsageWarning: "⚠️ تحذير: مساحة التخزين شحيحة",
+            storageFullWarning: "امتلأ التخزين. فشل حفظ السجل. يرجى حذف السجلات القديمة."
         }
     },
     { 
@@ -214,7 +238,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "외부 데이터 전송",
             settingsInternalTitle: "내부 데이터 저장",
-            settingsAIAssistTitle: "AI 보조 설정"
+            settingsAIAssistTitle: "AI 보조 설정",
+            storageInfoTitle: "스토리지 사용량",
+            storageUsageLabel: "사용량:",
+            storageUsageWarning: "⚠️ 경고: 저장 공간이 부족합니다",
+            storageFullWarning: "스토리지가 가득 찼습니다. 로그를 저장하지 못했습니다. 이전 로그를 삭제해 주세요."
         }
     },
     {
@@ -245,7 +273,11 @@ export const SUPPORTED_LANGUAGES = [
             ,
             settingsExternalTitle: "外部数据发送",
             settingsInternalTitle: "本地数据保存",
-            settingsAIAssistTitle: "AI 辅助设置"
+            settingsAIAssistTitle: "AI 辅助设置",
+            storageInfoTitle: "存储使用量",
+            storageUsageLabel: "使用量:",
+            storageUsageWarning: "⚠️ 警告：存储空间不足",
+            storageFullWarning: "存储已满。无法保存日志。请删除旧日志。"
         }
     }
 ];
